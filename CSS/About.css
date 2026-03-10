@@ -1,0 +1,25 @@
+/* ABOUT PAGE */
+
+.about-content{
+padding:40px 20px;
+line-height:1.6;
+min-height:70vh;
+}
+
+.about-content h1{
+text-align:center;
+margin-bottom:25px;
+}
+
+.about-content h2{
+margin-top:25px;
+}
+
+.about-list{
+margin-top:10px;
+padding-left:20px;
+}
+
+.about-list li{
+margin-bottom:8px;
+}
