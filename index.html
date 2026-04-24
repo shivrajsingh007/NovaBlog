@@ -1,212 +1,876 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/utils.css">
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NovaBlog — Heaven for Bloggers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-```
-<title>NovaBlog Heaven for bloggers</title>
-```
+    :root {
+      --ink: #0a0804;
+      --cream: #f5f0e8;
+      --warm: #e8dcc8;
+      --gold: #c9a84c;
+      --rust: #b54a2a;
+      --sage: #4a6741;
+      --muted: #7a7060;
+      --paper: #faf7f2;
+    }
 
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--ink);
+      padding: 0 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+      border-bottom: 2px solid var(--gold);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 900;
+      color: var(--cream);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--warm); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-search {
+      display: flex; gap: 0.5rem;
+    }
+    .nav-search input {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--cream);
+      padding: 0.45rem 1rem;
+      font-family: 'DM Mono', monospace; font-size: 0.8rem;
+      border-radius: 2px;
+      outline: none; width: 200px;
+      transition: border-color 0.2s;
+    }
+    .nav-search input::placeholder { color: var(--muted); }
+    .nav-search input:focus { border-color: var(--gold); }
+    .btn-search {
+      background: var(--gold); color: var(--ink);
+      border: none; padding: 0.45rem 1.2rem;
+      font-family: 'DM Mono', monospace; font-size: 0.75rem;
+      font-weight: 500; letter-spacing: 0.06em;
+      cursor: pointer; border-radius: 2px;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+    .btn-search:hover { background: var(--cream); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 5rem 3rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -40%; right: -10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-family: 'DM Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--gold);
+      padding: 0.25rem 0.75rem; margin-bottom: 1.5rem;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1200px; margin: 0 auto; }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+    .hero h1 em { color: var(--gold); font-style: italic; }
+    .hero p {
+      color: rgba(245,240,232,0.65);
+      font-size: 1.1rem; line-height: 1.7;
+      margin: 1.5rem 0 2rem;
+      max-width: 480px;
+    }
+    .hero-cta {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--gold); color: var(--ink);
+      padding: 0.85rem 2rem; border: none;
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .btn-primary:hover { background: var(--cream); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: var(--cream);
+      padding: 0.85rem 2rem;
+      border: 1px solid rgba(245,240,232,0.3);
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 0.9rem;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-stats {
+      display: flex; flex-direction: column; gap: 2rem; justify-content: center;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      padding-left: 4rem;
+    }
+    .stat-item { }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem; font-weight: 700;
+      color: var(--gold); line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.8rem; color: var(--muted);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+
+    /* ── TICKER ── */
+    .ticker {
+      background: var(--gold);
+      padding: 0.6rem 0; overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-inner {
+      display: inline-flex; gap: 0;
+      animation: ticker 25s linear infinite;
+    }
+    .ticker-item {
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      font-weight: 500; letter-spacing: 0.05em;
+      color: var(--ink); text-transform: uppercase;
+      padding: 0 3rem;
+    }
+    .ticker-dot { color: var(--rust); margin: 0 0.5rem; }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .section-label h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 700;
+    }
+    .section-label::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--warm);
+    }
+
+    /* ── FEATURED GRID ── */
+    .featured-section {
+      max-width: 1200px; margin: 4rem auto; padding: 0 3rem;
+    }
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1.5px;
+      background: var(--warm);
+      border: 1.5px solid var(--warm);
+    }
+    .card-hero {
+      grid-row: span 2;
+      background: var(--ink);
+      position: relative; overflow: hidden;
+      min-height: 480px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 2rem;
+      cursor: pointer;
+    }
+    .card-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,8,4,0.9) 0%, rgba(10,8,4,0.3) 60%, transparent 100%);
+      z-index: 1;
+    }
+    .card-hero-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #1a1208 0%, #2d1f0a 50%, #1a0f08 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8rem; opacity: 0.15;
+    }
+    .card-hero-content { position: relative; z-index: 2; }
+    .card-category {
+      font-family: 'DM Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.75rem;
+    }
+    .card-hero h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem; font-weight: 700; line-height: 1.2;
+      color: var(--cream); margin-bottom: 0.75rem;
+    }
+    .card-meta {
+      font-size: 0.78rem; color: rgba(245,240,232,0.5);
+      display: flex; gap: 1rem;
+    }
+    .card-small {
+      background: var(--paper);
+      padding: 1.5rem;
+      display: flex; flex-direction: column; justify-content: space-between;
+      min-height: 230px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .card-small:hover { background: var(--cream); }
+    .card-small h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; font-weight: 700; line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+    .card-small p {
+      font-size: 0.85rem; color: var(--muted);
+      line-height: 1.55; flex: 1; margin: 0.5rem 0;
+    }
+    .card-small .card-meta { color: var(--muted); }
+    .card-hero-img-placeholder {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #1c1408 0%, #2a1c08 100%);
+    }
+    .big-emoji {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 7rem; opacity: 0.12;
+    }
+
+    /* ── ALL ARTICLES ── */
+    .articles-section {
+      max-width: 1200px; margin: 4rem auto; padding: 0 3rem;
+    }
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .article-card {
+      border-bottom: 2px solid var(--warm);
+      padding-bottom: 1.5rem;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .article-card:hover { border-color: var(--gold); }
+    .article-card:hover .article-title { color: var(--rust); }
+    .article-img {
+      width: 100%; height: 180px;
+      background: var(--warm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; margin-bottom: 1rem;
+      overflow: hidden; position: relative;
+    }
+    .article-img-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .article-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 700; line-height: 1.35;
+      margin-bottom: 0.5rem;
+      transition: color 0.2s;
+    }
+    .article-excerpt {
+      font-size: 0.83rem; color: var(--muted); line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+    .article-meta {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.75rem; color: var(--muted);
+    }
+    .author-dot {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 700;
+      color: white; flex-shrink: 0;
+    }
+    .tag {
+      font-family: 'DM Mono', monospace; font-size: 0.65rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--warm); color: var(--muted);
+      padding: 0.2rem 0.5rem;
+    }
+
+    /* ── NEWSLETTER ── */
+    .newsletter {
+      background: var(--ink); color: var(--cream);
+      padding: 4rem 3rem; text-align: center; margin: 3rem 0;
+      position: relative; overflow: hidden;
+    }
+    .newsletter::before {
+      content: '';
+      position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 400px;
+      background: radial-gradient(ellipse, rgba(201,168,76,0.08) 0%, transparent 70%);
+    }
+    .newsletter h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem; font-weight: 900;
+      margin-bottom: 0.75rem; position: relative;
+    }
+    .newsletter p { color: rgba(245,240,232,0.55); margin-bottom: 2rem; font-size: 1rem; position: relative; }
+    .newsletter-form {
+      display: flex; gap: 0; max-width: 460px; margin: 0 auto;
+      position: relative;
+    }
+    .newsletter-form input {
+      flex: 1; padding: 1rem 1.25rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-right: none; color: var(--cream);
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      outline: none;
+    }
+    .newsletter-form input::placeholder { color: var(--muted); }
+    .newsletter-form button {
+      background: var(--gold); color: var(--ink);
+      border: none; padding: 1rem 1.75rem;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.85rem;
+      cursor: pointer; white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .newsletter-form button:hover { background: var(--cream); }
+
+    /* ── CATEGORIES ── */
+    .categories-section {
+      max-width: 1200px; margin: 4rem auto; padding: 0 3rem;
+    }
+    .categories-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+    }
+    .cat-card {
+      padding: 1.5rem 1rem; text-align: center;
+      border: 1.5px solid var(--warm);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .cat-card:hover { border-color: var(--gold); background: var(--ink); color: var(--cream); }
+    .cat-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .cat-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem;
+    }
+    .cat-count { font-size: 0.75rem; color: var(--muted); }
+    .cat-card:hover .cat-count { color: var(--muted); }
+
+    /* ── SIDEBAR LAYOUT ── */
+    .sidebar-section {
+      max-width: 1200px; margin: 4rem auto; padding: 0 3rem;
+      display: grid; grid-template-columns: 1fr 340px; gap: 3rem;
+    }
+    .trending-list { display: flex; flex-direction: column; gap: 0; }
+    .trending-item {
+      display: flex; align-items: flex-start; gap: 1.25rem;
+      padding: 1.25rem 0; border-bottom: 1px solid var(--warm);
+      cursor: pointer;
+    }
+    .trending-item:hover .trending-title { color: var(--rust); }
+    .trending-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem; font-weight: 900;
+      color: var(--warm); line-height: 1;
+      min-width: 40px;
+    }
+    .trending-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem; font-weight: 700; line-height: 1.35;
+      margin-bottom: 0.3rem; transition: color 0.2s;
+    }
+    .sidebar-widget { margin-bottom: 2rem; }
+    .sidebar-title {
+      font-family: 'DM Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem; border-bottom: 2px solid var(--ink);
+    }
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag-cloud a {
+      text-decoration: none;
+      font-family: 'DM Mono', monospace; font-size: 0.72rem;
+      background: var(--warm); color: var(--ink);
+      padding: 0.4rem 0.8rem; letter-spacing: 0.04em;
+      transition: all 0.2s;
+    }
+    .tag-cloud a:hover { background: var(--ink); color: var(--gold); }
+    .top-author {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--warm);
+    }
+    .author-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700; color: white; flex-shrink: 0;
+    }
+    .author-name { font-weight: 600; font-size: 0.9rem; }
+    .author-bio { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); color: var(--cream);
+      padding: 4rem 3rem 2rem;
+    }
+    .footer-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem; padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-brand h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; font-weight: 900;
+      color: var(--cream); margin-bottom: 0.75rem;
+    }
+    .footer-brand h3 span { color: var(--gold); }
+    .footer-brand p { color: var(--muted); font-size: 0.85rem; line-height: 1.7; max-width: 260px; }
+    .footer-col h4 {
+      font-family: 'DM Mono', monospace; font-size: 0.68rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.25rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+    .footer-col ul a { color: rgba(245,240,232,0.6); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--gold); }
+    .footer-bottom {
+      max-width: 1200px; margin: 2rem auto 0;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.78rem; color: var(--muted);
+    }
+    .social-links { display: flex; gap: 1rem; }
+    .social-link {
+      width: 34px; height: 34px;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; color: var(--muted);
+      text-decoration: none; transition: all 0.2s;
+    }
+    .social-link:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-grid { animation: fadeUp 0.7s ease both; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .hero { padding: 3rem 1.5rem; }
+      .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-stats { border-left: none; padding-left: 0; flex-direction: row; }
+      .featured-section, .articles-section, .sidebar-section, .categories-section { padding: 0 1.5rem; }
+      .articles-grid { grid-template-columns: 1fr; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .card-hero { grid-row: span 1; }
+      .categories-grid { grid-template-columns: repeat(3, 1fr); }
+      .sidebar-section { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
-
 <body>
-    <nav class="navigation max-width-1 m-auto">
-        <div class="nav-left">
-    <span>NovaBlog</span>
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/about.html">About</a></li>
-        <li><a href="/contact.html">Contact</a></li>
-    </ul>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Nova<span>Blog</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="About.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="blog.html">Articles</a></li>
+  </ul>
+  <form class="nav-search" action="search.html" method="get">
+    <input type="text" name="query" placeholder="Search articles...">
+    <button type="submit" class="btn-search">Go</button>
+  </form>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-tag">✦ Est. 2026 · The Writer's Sanctuary</div>
+      <h1>Words That <em>Move</em> the World</h1>
+      <p>NovaBlog is where ideas breathe. Discover insightful articles on technology, productivity, creativity, and the human experience — written by people who actually care.</p>
+      <div class="hero-cta">
+        <a href="blog.html" class="btn-primary">Explore Articles →</a>
+        <a href="About.html" class="btn-outline">Our Story</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">240+</div>
+        <div class="stat-label">Published Articles</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">38k</div>
+        <div class="stat-label">Monthly Readers</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">72</div>
+        <div class="stat-label">Active Writers</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">Web Development<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Artificial Intelligence<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Productivity<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Personal Growth<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Technology<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Programming<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Design<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Career<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Web Development<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Artificial Intelligence<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Productivity<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Personal Growth<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Technology<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Programming<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Design<span class="ticker-dot">✦</span></span>
+    <span class="ticker-item">Career<span class="ticker-dot">✦</span></span>
+  </div>
 </div>
-        <div class="nav-right">
-            <form action="/search.html" method="get">
- <input class="form-input" type="text" name = "query" placeholder="Article Search">
-            <button class="btn">Search</button>
-            </form>
-           
-        </div>
-    </nav>
 
-```
-<div class="max-width-1 m auto">
-    <hr>
+<!-- FEATURED -->
+<section class="featured-section">
+  <div class="section-label"><h2>Featured Stories</h2></div>
+  <div class="featured-grid">
+    <div class="card-hero">
+      <div class="card-hero-img-placeholder"></div>
+      <div class="big-emoji">🤖</div>
+      <div class="card-hero-content">
+        <div class="card-category">✦ Cover Story · Technology</div>
+        <h3>The Rise of Artificial Intelligence in Our Daily Lives</h3>
+        <p style="color:rgba(245,240,232,0.6);font-size:0.88rem;line-height:1.6;margin-bottom:1rem;">From your morning alarm to your Netflix recommendations — AI is already everywhere. Here's what that really means for us.</p>
+        <div class="card-meta">
+          <span>By Neha Kapoor</span>
+          <span>·</span>
+          <span>01 March 2026</span>
+          <span>·</span>
+          <span>5 min read</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-small">
+      <div>
+        <div class="card-category" style="color:var(--rust)">✦ Education</div>
+        <h3>How Technology is Transforming the Way We Learn</h3>
+        <p>Classrooms are evolving. Digital tools are reshaping everything from homework to how teachers grade essays.</p>
+      </div>
+      <div class="card-meta">
+        <span>Ananya Verma</span> <span>·</span> <span>4 min read</span>
+      </div>
+    </div>
+    <div class="card-small">
+      <div>
+        <div class="card-category" style="color:var(--sage)">✦ Career</div>
+        <h3>Why Every Student Should Learn Web Development in 2026</h3>
+        <p>The digital economy waits for no one. Here's why coding fluency is becoming as essential as writing.</p>
+      </div>
+      <div class="card-meta">
+        <span>Priya Singh</span> <span>·</span> <span>7 min read</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories-section">
+  <div class="section-label"><h2>Explore by Topic</h2></div>
+  <div class="categories-grid">
+    <div class="cat-card">
+      <div class="cat-icon">💻</div>
+      <div class="cat-name">Web Dev</div>
+      <div class="cat-count">42 articles</div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-icon">🧠</div>
+      <div class="cat-name">AI & Tech</div>
+      <div class="cat-count">38 articles</div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-icon">⚡</div>
+      <div class="cat-name">Productivity</div>
+      <div class="cat-count">29 articles</div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-icon">🎯</div>
+      <div class="cat-name">Career</div>
+      <div class="cat-count">24 articles</div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-icon">🌱</div>
+      <div class="cat-name">Personal</div>
+      <div class="cat-count">31 articles</div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLES GRID -->
+<section class="articles-section">
+  <div class="section-label"><h2>Latest Articles</h2></div>
+  <div class="articles-grid">
+
+    <article class="article-card">
+      <div class="article-img" style="background:#1a0f08;">
+        <div class="article-img-inner">📱</div>
+      </div>
+      <div class="tag">Social Media</div>
+      <h3 class="article-title" style="margin-top:0.6rem;">The Future of Social Media in a Digital World</h3>
+      <p class="article-excerpt">Social platforms are at a crossroads. As users demand more privacy and authenticity, the giants scramble to adapt.</p>
+      <div class="article-meta">
+        <div class="author-dot" style="background:#b54a2a;">RS</div>
+        <div>
+          <div style="font-weight:500;">Rahul Sharma</div>
+          <div>12 March · 5 min read</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="article-card">
+      <div class="article-img" style="background:#0a1a0f;">
+        <div class="article-img-inner">🎓</div>
+      </div>
+      <div class="tag">Education</div>
+      <h3 class="article-title" style="margin-top:0.6rem;">Top Productivity Tips for Students That Actually Work</h3>
+      <p class="article-excerpt">Forget hustle culture. These research-backed strategies will help you study smarter, not harder.</p>
+      <div class="article-meta">
+        <div class="author-dot" style="background:#4a6741;">KM</div>
+        <div>
+          <div style="font-weight:500;">Karan Mehta</div>
+          <div>08 March · 6 min read</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="article-card">
+      <div class="article-img" style="background:#0d0a1a;">
+        <div class="article-img-inner">🚀</div>
+      </div>
+      <div class="tag">Programming</div>
+      <h3 class="article-title" style="margin-top:0.6rem;">Best JavaScript Projects for Beginners in 2026</h3>
+      <p class="article-excerpt">Build real things from day one. These beginner-friendly JS projects will supercharge your portfolio.</p>
+      <div class="article-meta">
+        <div class="author-dot" style="background:#2a5a8a;">RS</div>
+        <div>
+          <div style="font-weight:500;">Rohit Sharma</div>
+          <div>28 Feb · 6 min read</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="article-card">
+      <div class="article-img" style="background:#1a1208;">
+        <div class="article-img-inner">☀️</div>
+      </div>
+      <div class="tag">Lifestyle</div>
+      <h3 class="article-title" style="margin-top:0.6rem;">Simple Daily Habits That Quietly Change Your Life</h3>
+      <p class="article-excerpt">The biggest transformations happen through the smallest consistent actions. Here's where to start.</p>
+      <div class="article-meta">
+        <div class="author-dot" style="background:#c9a84c;">AP</div>
+        <div>
+          <div style="font-weight:500;">Arjun Patel</div>
+          <div>02 March · 3 min read</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="article-card">
+      <div class="article-img" style="background:#1a0a0a;">
+        <div class="article-img-inner">🎨</div>
+      </div>
+      <div class="tag">Design</div>
+      <h3 class="article-title" style="margin-top:0.6rem;">CSS in 2026: Features That Make Developers Rejoice</h3>
+      <p class="article-excerpt">Container queries, nesting, and cascade layers are here. Here's how to actually use them in production.</p>
+      <div class="article-meta">
+        <div class="author-dot" style="background:#8a2a5a;">AV</div>
+        <div>
+          <div style="font-weight:500;">Aisha Varma</div>
+          <div>25 Feb · 8 min read</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="article-card">
+      <div class="article-img" style="background:#0a1a18;">
+        <div class="article-img-inner">💡</div>
+      </div>
+      <div class="tag">Career</div>
+      <h3 class="article-title" style="margin-top:0.6rem;">From Zero to Job-Ready: The Developer Roadmap Nobody Tells You</h3>
+      <p class="article-excerpt">The truth about breaking into tech — what actually matters vs. what everyone else is wasting time on.</p>
+      <div class="article-meta">
+        <div class="author-dot" style="background:#5a3a8a;">NK</div>
+        <div>
+          <div style="font-weight:500;">Naveen Kumar</div>
+          <div>20 Feb · 10 min read</div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <h2>Never Miss a Story</h2>
+  <p>Join 38,000+ readers. One email a week. Zero spam, ever.</p>
+  <form class="newsletter-form">
+    <input type="email" placeholder="your@email.com">
+    <button type="submit">Subscribe →</button>
+  </form>
 </div>
 
-<div class="content max-width-1 m-auto my-2">
-    <div class="content-left">
-        <h1>The heaven for bloggers</h1>
-
-        <p>NovaBlog is a platform where writers and readers come together to share ideas,
-            knowledge, and experiences. Anyone can publish articles and reach a wide
-            audience of readers interested in learning something new every day.</p>
-
-        <p>
-            Our goal is to create a space where creativity and information meet.
-            Whether you want to write about technology, lifestyle, education,
-            productivity, or personal experiences, NovaBlog helps you express your
-            thoughts and connect with people around the world.
-        </p>
+<!-- TRENDING + SIDEBAR -->
+<section class="sidebar-section">
+  <div>
+    <div class="section-label"><h2>Trending Now</h2></div>
+    <div class="trending-list">
+      <div class="trending-item">
+        <div class="trending-num">01</div>
+        <div>
+          <div class="trending-title">The Future of Social Media in a Digital World</div>
+          <div class="article-meta"><span>Rahul Sharma</span><span>·</span><span>12 March · 5 min</span></div>
+        </div>
+      </div>
+      <div class="trending-item">
+        <div class="trending-num">02</div>
+        <div>
+          <div class="trending-title">Why Learning Web Development is the Best Investment</div>
+          <div class="article-meta"><span>Priya Singh</span><span>·</span><span>05 March · 7 min</span></div>
+        </div>
+      </div>
+      <div class="trending-item">
+        <div class="trending-num">03</div>
+        <div>
+          <div class="trending-title">The Rise of Artificial Intelligence in Daily Life</div>
+          <div class="article-meta"><span>Neha Kapoor</span><span>·</span><span>01 March · 5 min</span></div>
+        </div>
+      </div>
+      <div class="trending-item">
+        <div class="trending-num">04</div>
+        <div>
+          <div class="trending-title">Top Productivity Tips for Students That Actually Work</div>
+          <div class="article-meta"><span>Karan Mehta</span><span>·</span><span>08 March · 6 min</span></div>
+        </div>
+      </div>
+      <div class="trending-item">
+        <div class="trending-num">05</div>
+        <div>
+          <div class="trending-title">Best JavaScript Projects for Beginners in 2026</div>
+          <div class="article-meta"><span>Rohit Sharma</span><span>·</span><span>28 Feb · 6 min</span></div>
+        </div>
+      </div>
     </div>
-
-    <div class="content-right">
-        <img src="img/home.jpg" alt="NovaBlog">
+  </div>
+  <aside>
+    <div class="sidebar-widget">
+      <div class="sidebar-title">Top Writers</div>
+      <div class="top-author">
+        <div class="author-avatar" style="background:#b54a2a;">RS</div>
+        <div><div class="author-name">Rahul Sharma</div><div class="author-bio">Tech & Society</div></div>
+      </div>
+      <div class="top-author">
+        <div class="author-avatar" style="background:#4a6741;">AV</div>
+        <div><div class="author-name">Ananya Verma</div><div class="author-bio">EdTech Writer</div></div>
+      </div>
+      <div class="top-author">
+        <div class="author-avatar" style="background:#c9a84c;">NK</div>
+        <div><div class="author-name">Neha Kapoor</div><div class="author-bio">AI Enthusiast</div></div>
+      </div>
     </div>
-</div>
-
-<div class="max-width-1 m-auto">
-    <hr>
-</div>
-
-<div class="home-articles max-width-1 m-auto font1">
-    <h2>Featured Articles</h2>
-
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/1.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>The Future of Social Media in a Digital World</h3>
-            </a>
-            <span>By Rahul Sharma</span>
-            <span>12 March | 5 min read</span>
-        </div>
+    <div class="sidebar-widget">
+      <div class="sidebar-title">Browse Tags</div>
+      <div class="tag-cloud">
+        <a href="#">JavaScript</a>
+        <a href="#">CSS</a>
+        <a href="#">React</a>
+        <a href="#">AI</a>
+        <a href="#">Study Tips</a>
+        <a href="#">Career</a>
+        <a href="#">Habits</a>
+        <a href="#">Design</a>
+        <a href="#">Python</a>
+        <a href="#">Node.js</a>
+        <a href="#">Portfolio</a>
+      </div>
     </div>
+  </aside>
+</section>
 
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/1.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>How Technology is Transforming Education</h3>
-            </a>
-            <span>By Ananya Verma</span>
-            <span>10 March | 4 min read</span>
-        </div>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>Nova<span>Blog</span></h3>
+      <p>A platform where writers and readers come together to share ideas, knowledge, and experiences that matter.</p>
     </div>
-
-  <!-- Article 1 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/1.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>The Future of Social Media in a Digital World</h3>
-            </a>
-            <span>By Rahul Sharma</span>
-            <span>12 March | 5 min read</span>
-        </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="blog.html">Articles</a></li>
+        <li><a href="About.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
     </div>
-
-    <!-- Article 2 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/2.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>How Technology is Transforming Education</h3>
-            </a>
-            <span>By Ananya Verma</span>
-            <span>10 March | 4 min read</span>
-        </div>
+    <div class="footer-col">
+      <h4>Topics</h4>
+      <ul>
+        <li><a href="#">Web Development</a></li>
+        <li><a href="#">AI & Technology</a></li>
+        <li><a href="#">Productivity</a></li>
+        <li><a href="#">Personal Growth</a></li>
+      </ul>
     </div>
-
-    <!-- Article 3 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/3.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>Top Productivity Tips for Students</h3>
-            </a>
-            <span>By Karan Mehta</span>
-            <span>08 March | 6 min read</span>
-        </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="About.html">Our Story</a></li>
+        <li><a href="#">Write for Us</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
     </div>
-
-    <!-- Article 4 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/4.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>Why Learning Web Development is Important</h3>
-            </a>
-            <span>By Priya Singh</span>
-            <span>05 March | 7 min read</span>
-        </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 NovaBlog · Created by Shivraj Singh · All Rights Reserved</span>
+    <div class="social-links">
+      <a class="social-link" href="#">𝕏</a>
+      <a class="social-link" href="#">in</a>
+      <a class="social-link" href="#">yt</a>
     </div>
-
-    <!-- Article 5 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/5.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>Simple Habits That Improve Your Daily Life</h3>
-            </a>
-            <span>By Arjun Patel</span>
-            <span>02 March | 3 min read</span>
-        </div>
-    </div>
-
-    <!-- Article 6 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/6.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>The Rise of Artificial Intelligence in Daily Life</h3>
-            </a>
-            <span>By Neha Kapoor</span>
-            <span>01 March | 5 min read</span>
-        </div>
-    </div>
-
-    <!-- Article 7 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/7.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>Best JavaScript Projects for Beginners</h3>
-            </a>
-            <span>By Rohit Sharma</span>
-            <span>28 Feb | 6 min read</span>
-        </div>
-    </div>
-
-</div>
- <footer class="footer">
-    <div class="footer-content">
-        <h3>Nova Blog</h3>
-        <p>Sharing ideas, knowledge and inspiration through articles.</p>
-
-        <div class="footer-links">
-            <a href="#">Home</a>
-            <a href="#">Articles</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-        </div>
-
-        <p class="copyright">
-            © 2026 Nova Blog | All Rights Reserved
-        </p>
-    </div>
+  </div>
 </footer>
 
+</body>
 </html>

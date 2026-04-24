@@ -1,152 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | NovaBlog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ink: #0a0804; --cream: #f5f0e8; --warm: #e8dcc8;
+      --gold: #c9a84c; --rust: #b54a2a; --sage: #4a6741;
+      --muted: #7a7060; --paper: #faf7f2;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--ink); padding: 0 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; border-bottom: 2px solid var(--gold);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--cream); }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--warm); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+    .nav-search { display: flex; gap: 0.5rem; }
+    .nav-search input { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: var(--cream); padding: 0.45rem 1rem; font-family: 'DM Mono', monospace; font-size: 0.8rem; border-radius: 2px; outline: none; width: 200px; }
+    .nav-search input::placeholder { color: var(--muted); }
+    .btn-search { background: var(--gold); color: var(--ink); border: none; padding: 0.45rem 1.2rem; font-family: 'DM Mono', monospace; font-size: 0.75rem; cursor: pointer; text-transform: uppercase; }
 
-<link rel="stylesheet" href="/css/utils.css">
-<link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/contact.css">
-<link rel="stylesheet" href="/css/About.css">
-<title>About | NovaBlog</title>
+    /* HERO */
+    .about-hero {
+      background: var(--ink); color: var(--cream);
+      padding: 5rem 3rem; position: relative; overflow: hidden;
+    }
+    .about-hero::before {
+      content: ''; position: absolute; bottom: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 65%);
+    }
+    .about-hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .about-tag { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--gold); padding: 0.25rem 0.75rem; display: inline-block; margin-bottom: 1.5rem; }
+    .about-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; line-height: 1.1; }
+    .about-hero h1 em { color: var(--gold); font-style: italic; }
+    .about-hero p { color: rgba(245,240,232,0.6); font-size: 1.05rem; line-height: 1.75; margin-top: 1.5rem; }
+    .hero-quote {
+      border-left: 3px solid var(--gold); padding-left: 2rem;
+    }
+    .hero-quote blockquote { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-style: italic; line-height: 1.4; color: var(--cream); margin-bottom: 1rem; }
+    .hero-quote cite { font-size: 0.8rem; color: var(--muted); font-style: normal; letter-spacing: 0.06em; }
 
+    /* MISSION STRIP */
+    .mission-strip {
+      background: var(--gold); padding: 1.5rem 3rem;
+    }
+    .mission-strip-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 3rem; }
+    .mission-strip p { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; color: var(--ink); }
+    .mission-strip span { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(10,8,4,0.6); white-space: nowrap; }
+
+    /* STATS */
+    .stats-section { background: var(--cream); padding: 3rem; }
+    .stats-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+    .stat-box { text-align: center; padding: 2rem 1rem; border: 1.5px solid var(--warm); background: var(--paper); }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: var(--rust); line-height: 1; }
+    .stat-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.5rem; }
+
+    /* CONTENT SECTIONS */
+    .about-content { max-width: 1200px; margin: 0 auto; padding: 4rem 3rem; }
+    .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+    .content-block h2 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; margin-bottom: 1.25rem; }
+    .content-block h2 em { color: var(--rust); font-style: italic; }
+    .content-block p { font-size: 0.95rem; line-height: 1.8; color: #3a3530; margin-bottom: 1rem; }
+    .content-block ul { list-style: none; margin-top: 0.5rem; }
+    .content-block ul li { padding: 0.6rem 0; border-bottom: 1px solid var(--warm); font-size: 0.92rem; display: flex; align-items: center; gap: 0.75rem; }
+    .content-block ul li::before { content: '✦'; color: var(--gold); font-size: 0.65rem; flex-shrink: 0; }
+
+    /* CATEGORIES GRID */
+    .topics-section { background: var(--ink); padding: 4rem 3rem; color: var(--cream); }
+    .topics-inner { max-width: 1200px; margin: 0 auto; }
+    .topics-inner h2 { font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 2rem; }
+    .topics-inner h2 span { color: var(--gold); }
+    .topics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: rgba(255,255,255,0.06); }
+    .topic-cell { padding: 2rem; background: rgba(10,8,4,1); transition: background 0.2s; cursor: pointer; }
+    .topic-cell:hover { background: rgba(201,168,76,0.08); }
+    .topic-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .topic-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .topic-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+    .topic-count { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: var(--gold); letter-spacing: 0.08em; margin-top: 0.75rem; }
+
+    /* CREATOR */
+    .creator-section { max-width: 1200px; margin: 0 auto; padding: 4rem 3rem; }
+    .creator-card { background: var(--ink); color: var(--cream); padding: 3rem; display: grid; grid-template-columns: auto 1fr; gap: 3rem; align-items: start; }
+    .creator-avatar {
+      width: 120px; height: 120px;
+      background: linear-gradient(135deg, var(--rust), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900;
+      flex-shrink: 0;
+    }
+    .creator-tag { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+    .creator-name { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
+    .creator-bio { font-size: 0.92rem; line-height: 1.8; color: rgba(245,240,232,0.65); margin-bottom: 1.5rem; }
+    .creator-skills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag { font-family: 'DM Mono', monospace; font-size: 0.68rem; background: rgba(255,255,255,0.07); color: var(--muted); padding: 0.3rem 0.75rem; border: 1px solid rgba(255,255,255,0.1); letter-spacing: 0.04em; }
+
+    footer { background: var(--ink); color: var(--cream); padding: 2.5rem 3rem; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; }
+    .footer-logo span { color: var(--gold); }
+    .footer-links-row { display: flex; gap: 2rem; list-style: none; }
+    .footer-links-row a { color: var(--muted); text-decoration: none; font-size: 0.83rem; transition: color 0.2s; }
+    .footer-links-row a:hover { color: var(--gold); }
+    .footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+    @media(max-width:900px) {
+      nav { padding: 0 1.5rem; } .nav-links { display: none; }
+      .about-hero { padding: 3rem 1.5rem; }
+      .about-hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .content-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .topics-grid { grid-template-columns: repeat(2, 1fr); }
+      .creator-card { grid-template-columns: 1fr; }
+      .about-content, .creator-section { padding: 3rem 1.5rem; }
+      .mission-strip { padding: 1.5rem; }
+      .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
 </head>
-
 <body>
 
-<nav class="navigation max-width-1 m-auto">
-
-<div class="nav-left">
-
-<span>NovaBlog</span>
-
-<ul>
-<li><a href="index.html">Home</a></li>
-<li><a href="about.html">About</a></li>
-<li><a href="contact.html">Contact</a></li>
-</ul>
-
-</div>
-
-<div class="nav-right">
-
-<form action="/search.html" method="get">
-
-<input class="form-input" type="text" name="query" placeholder="Article Search">
-
-<button class="btn">Search</button>
-
-</form>
-
-</div>
-
+<nav>
+  <div class="nav-logo">Nova<span>Blog</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="About.html" class="active">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="blog.html">Articles</a></li>
+  </ul>
+  <form class="nav-search" action="search.html" method="get">
+    <input type="text" name="query" placeholder="Search articles...">
+    <button type="submit" class="btn-search">Go</button>
+  </form>
 </nav>
 
-
-<div class="max-width-1 m-auto">
-<hr>
-</div>
-
-
-<div class="about-content max-width-1 m-auto font1">
-
-<h1>About NovaBlog</h1>
-
-<p>
-NovaBlog is a modern blogging platform designed for writers, learners,
-and technology enthusiasts who want to share their ideas with the world.
-It is a place where knowledge, creativity, and innovation come together.
-</p>
-
-<p>
-The goal of NovaBlog is to provide a simple yet powerful space where
-anyone can write articles, share tutorials, and publish their thoughts
-on topics that matter to them. Whether you are a student, developer,
-or professional, NovaBlog encourages you to share what you know.
-</p>
-
-
-<h2>Our Mission</h2>
-
-<p>
-Our mission is to make knowledge accessible and easy to share.
-We believe that everyone has something valuable to contribute.
-NovaBlog helps individuals express their ideas and reach readers
-who are eager to learn new things every day.
-</p>
-
-<p>
-By combining simple design with useful content, NovaBlog aims
-to create a community where readers and writers grow together.
-</p>
-
-
-<h2>What You Can Find on NovaBlog</h2>
-
-<ul class="about-list">
-
-<li>Web Development Tutorials</li>
-<li>Programming Guides</li>
-<li>Technology News</li>
-<li>Student Productivity Tips</li>
-<li>Personal Development Articles</li>
-
-</ul>
-
-
-<h2>Why NovaBlog Exists</h2>
-
-<p>
-In today's digital world, information is everywhere but
-quality content can be hard to find. NovaBlog focuses on
-delivering meaningful and helpful articles that readers
-can actually learn from.
-</p>
-
-<p>
-Our platform encourages curiosity, creativity, and
-continuous learning through blogging.
-</p>
-
-
-<h2>About the Creator</h2>
-
-<p>
-NovaBlog was created by <strong>Shivraj Singh</strong> as a
-frontend development project while learning HTML, CSS,
-and web design. The goal of this project is to practice
-building a responsive blog layout and understand how
-real websites are structured.
-</p>
-
-<p>
-This project represents the beginning of a journey into
-web development and creating useful digital products.
-</p>
-
-</div>
-
-
-<footer class="footer">
-    <div class="footer-content">
-        <h3>Nova Blog</h3>
-        <p>Sharing ideas, knowledge and inspiration through articles.</p>
-
-        <div class="footer-links">
-            <a href="#">Home</a>
-            <a href="#">Articles</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-        </div>
-
-        <p class="copyright">
-            © 2026 Nova Blog | All Rights Reserved
-        </p>
+<section class="about-hero">
+  <div class="about-hero-inner">
+    <div>
+      <div class="about-tag">✦ Est. 2026 · Our Story</div>
+      <h1>We Believe in the <em>Power of Words</em></h1>
+      <p>NovaBlog is more than a blogging platform. It's a community of thinkers, writers, and lifelong learners who believe that sharing ideas makes the world a little bit better every day.</p>
     </div>
+    <div class="hero-quote">
+      <blockquote>"If you have knowledge, let others light their candles in it."</blockquote>
+      <cite>— The NovaBlog Philosophy</cite>
+    </div>
+  </div>
+</section>
+
+<div class="mission-strip">
+  <div class="mission-strip-inner">
+    <p>"Making knowledge accessible, one article at a time."</p>
+    <span>Our Mission Statement · Founded 2026</span>
+  </div>
+</div>
+
+<div class="stats-section">
+  <div class="stats-inner">
+    <div class="stat-box"><div class="stat-num">240+</div><div class="stat-label">Articles Published</div></div>
+    <div class="stat-box"><div class="stat-num">38k</div><div class="stat-label">Monthly Readers</div></div>
+    <div class="stat-box"><div class="stat-num">72</div><div class="stat-label">Active Writers</div></div>
+    <div class="stat-box"><div class="stat-num">12</div><div class="stat-label">Topic Categories</div></div>
+  </div>
+</div>
+
+<div class="about-content">
+  <div class="content-grid">
+    <div class="content-block">
+      <h2>What Is <em>NovaBlog?</em></h2>
+      <p>NovaBlog is a modern blogging platform designed for writers, learners, and technology enthusiasts who want to share their ideas with the world. It is a place where knowledge, creativity, and innovation come together in one elegant space.</p>
+      <p>The goal of NovaBlog is to provide a simple yet powerful space where anyone can write articles, share tutorials, and publish their thoughts on topics that matter to them. Whether you're a student, developer, or professional — NovaBlog gives you the stage.</p>
+      <p>By combining clean design with rich content, NovaBlog creates a community where readers and writers grow together — one article at a time.</p>
+    </div>
+    <div class="content-block">
+      <h2>Our <em>Mission</em></h2>
+      <p>Our mission is to make knowledge accessible and genuinely easy to share. We believe that everyone has something valuable to contribute, and that the best ideas often come from unexpected places.</p>
+      <p>NovaBlog helps individuals express their ideas and reach readers who are eager to learn new things every day. We focus on quality over quantity — every article is published because it earns its place.</p>
+      <p>In today's world, quality content is hard to find. NovaBlog focuses on delivering meaningful, helpful articles that readers can actually learn from and apply.</p>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h2>What You Can Find on <em>NovaBlog</em></h2>
+    <ul>
+      <li>Web Development Tutorials — from beginner HTML to advanced React patterns</li>
+      <li>Programming Guides — Python, JavaScript, CSS, and more</li>
+      <li>Artificial Intelligence & Technology News</li>
+      <li>Student Productivity Tips — backed by research, not hustle culture</li>
+      <li>Personal Development & Habit Building Articles</li>
+      <li>Career Advice for developers and digital professionals</li>
+      <li>Design Principles for modern web interfaces</li>
+    </ul>
+  </div>
+</div>
+
+<section class="topics-section">
+  <div class="topics-inner">
+    <h2>Explore Our <span>Topics</span></h2>
+    <div class="topics-grid">
+      <div class="topic-cell">
+        <div class="topic-icon">💻</div>
+        <div class="topic-name">Web Development</div>
+        <div class="topic-desc">HTML, CSS, JavaScript, frameworks, and everything you need to build for the web.</div>
+        <div class="topic-count">✦ 42 articles</div>
+      </div>
+      <div class="topic-cell">
+        <div class="topic-icon">🧠</div>
+        <div class="topic-name">AI & Technology</div>
+        <div class="topic-desc">Machine learning, automation, and the tech shaping our world today.</div>
+        <div class="topic-count">✦ 38 articles</div>
+      </div>
+      <div class="topic-cell">
+        <div class="topic-icon">⚡</div>
+        <div class="topic-name">Productivity</div>
+        <div class="topic-desc">Study smarter, work better, and get more done with research-backed strategies.</div>
+        <div class="topic-count">✦ 29 articles</div>
+      </div>
+      <div class="topic-cell">
+        <div class="topic-icon">🎯</div>
+        <div class="topic-name">Career</div>
+        <div class="topic-desc">Land your first tech job, level up your skills, and build a meaningful career.</div>
+        <div class="topic-count">✦ 24 articles</div>
+      </div>
+      <div class="topic-cell">
+        <div class="topic-icon">🌱</div>
+        <div class="topic-name">Personal Growth</div>
+        <div class="topic-desc">Habits, mindset, and the small changes that create big transformations.</div>
+        <div class="topic-count">✦ 31 articles</div>
+      </div>
+      <div class="topic-cell">
+        <div class="topic-icon">🎨</div>
+        <div class="topic-name">Design</div>
+        <div class="topic-desc">UI/UX, typography, color theory, and creating interfaces people love.</div>
+        <div class="topic-count">✦ 19 articles</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="creator-section">
+  <div class="creator-card">
+    <div class="creator-avatar">SS</div>
+    <div>
+      <div class="creator-tag">✦ Meet the Creator</div>
+      <div class="creator-name">Shivraj Singh</div>
+      <p class="creator-bio">NovaBlog was created by Shivraj Singh as a frontend development project while learning HTML, CSS, and web design. The goal was to practice building a responsive, real-world blog layout and understand how great websites are structured from the ground up.</p>
+      <p class="creator-bio">This project represents the exciting beginning of a journey into web development — proof that you can build something beautiful while you're still learning. Every article on NovaBlog exists because Shivraj believes that sharing knowledge matters.</p>
+      <div class="creator-skills">
+        <span class="skill-tag">HTML5</span>
+        <span class="skill-tag">CSS3</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">Web Design</span>
+        <span class="skill-tag">Responsive Layout</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Nova<span>Blog</span></div>
+    <ul class="footer-links-row">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="blog.html">Articles</a></li>
+      <li><a href="About.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2026 NovaBlog · Shivraj Singh · All Rights Reserved</div>
+  </div>
 </footer>
 
 </body>
-
 </html>

@@ -1,163 +1,367 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/utils.css">
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search | NovaBlog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --ink: #0a0804; --cream: #f5f0e8; --warm: #e8dcc8;
+      --gold: #c9a84c; --rust: #b54a2a; --sage: #4a6741;
+      --muted: #7a7060; --paper: #faf7f2;
+    }
+    body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); }
 
-```
-<title>i-bLOG Heaven for bloggers</title>
-```
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--ink); padding: 0 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px; border-bottom: 2px solid var(--gold);
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: var(--cream); }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--warm); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-search { display: flex; gap: 0.5rem; }
+    .nav-search input { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: var(--cream); padding: 0.45rem 1rem; font-family: 'DM Mono', monospace; font-size: 0.8rem; border-radius: 2px; outline: none; width: 200px; }
+    .nav-search input::placeholder { color: var(--muted); }
+    .btn-search { background: var(--gold); color: var(--ink); border: none; padding: 0.45rem 1.2rem; font-family: 'DM Mono', monospace; font-size: 0.75rem; cursor: pointer; text-transform: uppercase; }
 
+    /* SEARCH HERO */
+    .search-hero { background: var(--ink); padding: 3rem 3rem 2.5rem; }
+    .search-hero-inner { max-width: 1200px; margin: 0 auto; }
+    .search-tag { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    .search-hero h1 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--cream); font-weight: 700; margin-bottom: 1.5rem; }
+    .search-hero h1 em { color: var(--gold); font-style: italic; }
+
+    /* BIG SEARCH BAR */
+    .big-search { display: flex; max-width: 700px; }
+    .big-search input {
+      flex: 1; padding: 1rem 1.5rem;
+      background: rgba(255,255,255,0.06);
+      border: 2px solid rgba(255,255,255,0.15); border-right: none;
+      color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 1rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .big-search input:focus { border-color: var(--gold); }
+    .big-search input::placeholder { color: var(--muted); }
+    .big-search button {
+      background: var(--gold); color: var(--ink);
+      border: none; padding: 1rem 1.75rem;
+      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+      cursor: pointer; white-space: nowrap; transition: background 0.2s;
+    }
+    .big-search button:hover { background: var(--cream); }
+    .search-meta { color: var(--muted); font-size: 0.82rem; margin-top: 1rem; font-family: 'DM Mono', monospace; }
+    .search-meta strong { color: var(--gold); }
+
+    /* QUICK FILTERS */
+    .quick-filters { background: rgba(255,255,255,0.04); border-top: 1px solid rgba(255,255,255,0.07); padding: 1rem 0 0; max-width: 1200px; margin: 0 auto; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .quick-filter { background: none; border: 1px solid rgba(255,255,255,0.12); color: var(--muted); padding: 0.35rem 0.9rem; font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; cursor: pointer; transition: all 0.2s; }
+    .quick-filter:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* MAIN */
+    .search-main { max-width: 1200px; margin: 0 auto; padding: 3rem 3rem; display: grid; grid-template-columns: 1fr 280px; gap: 3rem; }
+
+    /* RESULTS */
+    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--ink); }
+    .results-count { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
+    .results-sort { background: none; border: 1px solid var(--warm); padding: 0.35rem 0.75rem; font-family: 'DM Mono', monospace; font-size: 0.68rem; color: var(--muted); cursor: pointer; appearance: none; }
+
+    .result-item {
+      display: flex; gap: 1.25rem; padding: 1.5rem 0;
+      border-bottom: 1px solid var(--warm); cursor: pointer;
+    }
+    .result-item:hover .result-title { color: var(--rust); }
+    .result-img {
+      width: 120px; height: 85px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; border-radius: 2px;
+    }
+    .result-body { flex: 1; }
+    .result-tag { font-family: 'DM Mono', monospace; font-size: 0.63rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+    .result-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; line-height: 1.35; margin-bottom: 0.35rem; transition: color 0.2s; }
+    .result-excerpt { font-size: 0.8rem; color: var(--muted); line-height: 1.55; margin-bottom: 0.6rem; }
+    .result-meta { display: flex; gap: 0.75rem; font-size: 0.72rem; color: var(--muted); align-items: center; }
+    .avatar { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; font-weight: 700; color: white; }
+
+    /* HIGHLIGHT */
+    .highlight { background: rgba(201,168,76,0.2); color: var(--ink); padding: 0 2px; }
+
+    /* NO RESULTS */
+    .no-results { text-align: center; padding: 4rem 2rem; }
+    .no-results h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 0.75rem; }
+    .no-results p { color: var(--muted); margin-bottom: 1.5rem; }
+
+    /* SIDEBAR */
+    .sidebar { }
+    .sidebar-title { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 2px solid var(--ink); }
+    .sidebar-widget { margin-bottom: 2.5rem; }
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag-cloud a { text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.65rem; background: var(--warm); color: var(--ink); padding: 0.3rem 0.65rem; transition: all 0.2s; }
+    .tag-cloud a:hover { background: var(--ink); color: var(--gold); }
+    .recent-item { margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--warm); cursor: pointer; }
+    .recent-title { font-size: 0.85rem; font-weight: 600; line-height: 1.35; margin-bottom: 0.2rem; transition: color 0.2s; }
+    .recent-item:hover .recent-title { color: var(--rust); }
+    .recent-meta { font-size: 0.72rem; color: var(--muted); }
+
+    footer { background: var(--ink); color: var(--cream); padding: 2.5rem 3rem; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; }
+    .footer-logo span { color: var(--gold); }
+    .footer-links-row { display: flex; gap: 2rem; list-style: none; }
+    .footer-links-row a { color: var(--muted); text-decoration: none; font-size: 0.83rem; transition: color 0.2s; }
+    .footer-links-row a:hover { color: var(--gold); }
+    .footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+    @media(max-width:900px) {
+      nav { padding: 0 1.5rem; } .nav-links { display: none; }
+      .search-hero { padding: 2rem 1.5rem; }
+      .search-main { padding: 2rem 1.5rem; grid-template-columns: 1fr; }
+      .result-img { width: 80px; height: 65px; }
+      .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
 </head>
-
 <body>
-    <nav class="navigation max-width-1 m-auto">
-        <div class="nav-left">
-            <span>iBlog</span>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/"></a>About</li>
-                <li><a href="/contact">Contact</a></li>
-            </ul>
-        </div>
-        <div class="nav-right">
-            <form action="/search.html" method="get">
- <input class="form-input" type="text" name = "query" placeholder="Article Search">
-            <button class="btn">Search</button>
-            </form>
-           
-        </div>
-    </nav>
 
-<div class="max-width-1 m-auto">
-    <hr>
+<nav>
+  <div class="nav-logo">Nova<span>Blog</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="About.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="blog.html">Articles</a></li>
+  </ul>
+  <form class="nav-search" action="search.html" method="get">
+    <input type="text" name="query" placeholder="Search articles...">
+    <button type="submit" class="btn-search">Go</button>
+  </form>
+</nav>
+
+<div class="search-hero">
+  <div class="search-hero-inner">
+    <div class="search-tag">✦ Search NovaBlog</div>
+    <h1>Find Your Next <em>Great Read</em></h1>
+    <form class="big-search" action="search.html" method="get">
+      <input type="text" name="query" id="searchInput" placeholder="Search articles, topics, authors...">
+      <button type="submit">Search →</button>
+    </form>
+    <div class="search-meta" id="searchMeta">Enter a keyword to search 240+ articles</div>
+    <div class="quick-filters">
+      <button class="quick-filter" onclick="setQuery('JavaScript')">JavaScript</button>
+      <button class="quick-filter" onclick="setQuery('AI')">Artificial Intelligence</button>
+      <button class="quick-filter" onclick="setQuery('productivity')">Productivity</button>
+      <button class="quick-filter" onclick="setQuery('web development')">Web Development</button>
+      <button class="quick-filter" onclick="setQuery('career')">Career</button>
+      <button class="quick-filter" onclick="setQuery('CSS')">CSS</button>
+      <button class="quick-filter" onclick="setQuery('habits')">Habits</button>
+    </div>
+  </div>
 </div>
 
-<div class="home-articles max-width-1 m-auto font1">
-    <h2>Search Results For .... (0.3 seconds)</h2>
-
-    <!-- Article 1 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/1.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>The Future of Social Media in a Digital World</h3>
-            </a>
-            <span>By Rahul Sharma</span>
-            <span>12 March | 5 min read</span>
-        </div>
+<div class="search-main">
+  <div>
+    <div class="results-header">
+      <div class="results-count" id="resultsCount">Showing all 7 articles</div>
+      <select class="results-sort">
+        <option>Most Relevant</option>
+        <option>Newest First</option>
+        <option>Most Popular</option>
+      </select>
     </div>
+    <div id="resultsContainer">
 
-    <!-- Article 2 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/2.jpg" alt="article">
+      <div class="result-item" data-tags="social media digital world technology">
+        <div class="result-img" style="background:#0d1a0a;">📱</div>
+        <div class="result-body">
+          <div class="result-tag">Social Media</div>
+          <h3 class="result-title">The Future of Social Media in a Digital World</h3>
+          <p class="result-excerpt">Social platforms are at a crossroads. As users demand more privacy and authenticity, the giants scramble to adapt or get disrupted.</p>
+          <div class="result-meta">
+            <div class="avatar" style="background:#b54a2a;">RS</div>
+            <span>Rahul Sharma</span><span>·</span><span>12 March 2026</span><span>·</span><span>5 min read</span>
+          </div>
         </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>How Technology is Transforming Education</h3>
-            </a>
-            <span>By Ananya Verma</span>
-            <span>10 March | 4 min read</span>
+      </div>
+
+      <div class="result-item" data-tags="education technology learning classroom">
+        <div class="result-img" style="background:#0a0d1a;">🎓</div>
+        <div class="result-body">
+          <div class="result-tag">Education</div>
+          <h3 class="result-title">How Technology is Transforming the Way We Learn</h3>
+          <p class="result-excerpt">Classrooms are evolving. Digital tools are reshaping everything from homework to how teachers grade their students.</p>
+          <div class="result-meta">
+            <div class="avatar" style="background:#4a6741;">AV</div>
+            <span>Ananya Verma</span><span>·</span><span>10 March 2026</span><span>·</span><span>4 min read</span>
+          </div>
         </div>
+      </div>
+
+      <div class="result-item" data-tags="productivity students study tips learning">
+        <div class="result-img" style="background:#1a1208;">⚡</div>
+        <div class="result-body">
+          <div class="result-tag">Productivity</div>
+          <h3 class="result-title">Top Productivity Tips for Students That Actually Work</h3>
+          <p class="result-excerpt">Forget hustle culture. These research-backed strategies will help you study smarter, not harder.</p>
+          <div class="result-meta">
+            <div class="avatar" style="background:#c9a84c;">KM</div>
+            <span>Karan Mehta</span><span>·</span><span>08 March 2026</span><span>·</span><span>6 min read</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-item" data-tags="web development career coding programming">
+        <div class="result-img" style="background:#0d0a1a;">💻</div>
+        <div class="result-body">
+          <div class="result-tag">Career</div>
+          <h3 class="result-title">Why Learning Web Development is the Best Career Move</h3>
+          <p class="result-excerpt">The digital economy waits for no one. Here's why coding fluency is becoming as essential as reading and writing.</p>
+          <div class="result-meta">
+            <div class="avatar" style="background:#2a5a8a;">PS</div>
+            <span>Priya Singh</span><span>·</span><span>05 March 2026</span><span>·</span><span>7 min read</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-item" data-tags="habits lifestyle personal growth daily routine">
+        <div class="result-img" style="background:#1a0a08;">☀️</div>
+        <div class="result-body">
+          <div class="result-tag">Lifestyle</div>
+          <h3 class="result-title">Simple Daily Habits That Quietly Transform Your Life</h3>
+          <p class="result-excerpt">The biggest transformations come through the smallest consistent actions. Five habits that compound dramatically over time.</p>
+          <div class="result-meta">
+            <div class="avatar" style="background:#5a3a8a;">AP</div>
+            <span>Arjun Patel</span><span>·</span><span>02 March 2026</span><span>·</span><span>3 min read</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-item" data-tags="artificial intelligence AI technology machine learning daily life">
+        <div class="result-img" style="background:#0a0a1a;">🤖</div>
+        <div class="result-body">
+          <div class="result-tag">AI & Technology</div>
+          <h3 class="result-title">The Rise of Artificial Intelligence in Daily Life</h3>
+          <p class="result-excerpt">From your morning alarm to your Netflix recommendations — AI is already everywhere. Here's what that really means for us.</p>
+          <div class="result-meta">
+            <div class="avatar" style="background:#8a2a5a;">NK</div>
+            <span>Neha Kapoor</span><span>·</span><span>01 March 2026</span><span>·</span><span>5 min read</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-item" data-tags="javascript programming beginner projects coding">
+        <div class="result-img" style="background:#0a1a0a;">🚀</div>
+        <div class="result-body">
+          <div class="result-tag">Programming</div>
+          <h3 class="result-title">Best JavaScript Projects for Beginners in 2026</h3>
+          <p class="result-excerpt">Build real things from day one. These beginner-friendly JS projects will supercharge your portfolio.</p>
+          <div class="result-meta">
+            <div class="avatar" style="background:#8a2a2a;">RS</div>
+            <span>Rohit Sharma</span><span>·</span><span>28 Feb 2026</span><span>·</span><span>6 min read</span>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
 
-    <!-- Article 3 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/3.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>Top Productivity Tips for Students</h3>
-            </a>
-            <span>By Karan Mehta</span>
-            <span>08 March | 6 min read</span>
-        </div>
+  <aside class="sidebar">
+    <div class="sidebar-widget">
+      <div class="sidebar-title">Popular Topics</div>
+      <div class="tag-cloud">
+        <a href="search.html?query=JavaScript" onclick="setQuery('JavaScript')">JavaScript</a>
+        <a href="search.html?query=CSS" onclick="setQuery('CSS')">CSS</a>
+        <a href="search.html?query=React" onclick="setQuery('React')">React</a>
+        <a href="search.html?query=AI" onclick="setQuery('AI')">AI</a>
+        <a href="search.html?query=Study" onclick="setQuery('Study')">Study Tips</a>
+        <a href="search.html?query=career" onclick="setQuery('career')">Career</a>
+        <a href="search.html?query=habits" onclick="setQuery('habits')">Habits</a>
+        <a href="search.html?query=design" onclick="setQuery('design')">Design</a>
+        <a href="search.html?query=Python" onclick="setQuery('Python')">Python</a>
+      </div>
     </div>
-
-    <!-- Article 4 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/4.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>Why Learning Web Development is Important</h3>
-            </a>
-            <span>By Priya Singh</span>
-            <span>05 March | 7 min read</span>
-        </div>
+    <div class="sidebar-widget">
+      <div class="sidebar-title">Recently Published</div>
+      <div class="recent-item">
+        <div class="recent-title">The Future of Social Media in a Digital World</div>
+        <div class="recent-meta">Rahul Sharma · 12 March</div>
+      </div>
+      <div class="recent-item">
+        <div class="recent-title">How Technology Transforms Education</div>
+        <div class="recent-meta">Ananya Verma · 10 March</div>
+      </div>
+      <div class="recent-item">
+        <div class="recent-title">Top Productivity Tips for Students</div>
+        <div class="recent-meta">Karan Mehta · 08 March</div>
+      </div>
+      <div class="recent-item">
+        <div class="recent-title">Why Learning Web Dev Matters</div>
+        <div class="recent-meta">Priya Singh · 05 March</div>
+      </div>
     </div>
-
-    <!-- Article 5 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/5.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>Simple Habits That Improve Your Daily Life</h3>
-            </a>
-            <span>By Arjun Patel</span>
-            <span>02 March | 3 min read</span>
-        </div>
-    </div>
-
-    <!-- Article 6 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/6.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>The Rise of Artificial Intelligence in Daily Life</h3>
-            </a>
-            <span>By Neha Kapoor</span>
-            <span>01 March | 5 min read</span>
-        </div>
-    </div>
-
-    <!-- Article 7 -->
-    <div class="home-article">
-        <div class="home-article-img">
-            <img src="img/7.jpg" alt="article">
-        </div>
-        <div class="home-article-content font1">
-            <a href="/blogpost.html">
-                <h3>Best JavaScript Projects for Beginners</h3>
-            </a>
-            <span>By Rohit Sharma</span>
-            <span>28 Feb | 6 min read</span>
-        </div>
-    </div>
-
+  </aside>
 </div>
 
- <footer class="footer">
-    <div class="footer-content">
-        <h3>Nova Blog</h3>
-        <p>Sharing ideas, knowledge and inspiration through articles.</p>
-
-        <div class="footer-links">
-            <a href="#">Home</a>
-            <a href="#">Articles</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-        </div>
-
-        <p class="copyright">
-            © 2026 Nova Blog | All Rights Reserved
-        </p>
-    </div>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Nova<span>Blog</span></div>
+    <ul class="footer-links-row">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="blog.html">Articles</a></li>
+      <li><a href="About.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2026 NovaBlog · All Rights Reserved</div>
+  </div>
 </footer>
 
-</body>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get('query') || '';
+  const input = document.getElementById('searchInput');
+  const meta = document.getElementById('searchMeta');
+  const countEl = document.getElementById('resultsCount');
 
+  if (query) {
+    input.value = query;
+    filterResults(query);
+  }
+
+  function setQuery(q) {
+    document.getElementById('searchInput').value = q;
+    filterResults(q);
+    window.history.replaceState({}, '', `search.html?query=${encodeURIComponent(q)}`);
+  }
+
+  function filterResults(q) {
+    const items = document.querySelectorAll('.result-item');
+    const lower = q.toLowerCase();
+    let count = 0;
+    items.forEach(item => {
+      const text = (item.textContent + ' ' + (item.dataset.tags || '')).toLowerCase();
+      if (!q || text.includes(lower)) {
+        item.style.display = 'flex';
+        count++;
+      } else {
+        item.style.display = 'none';
+      }
+    });
+    const seconds = (Math.random() * 0.4 + 0.1).toFixed(2);
+    meta.innerHTML = q
+      ? `Searched for <strong>"${q}"</strong> · ${seconds} seconds`
+      : 'Enter a keyword to search 240+ articles';
+    countEl.textContent = `Showing ${count} result${count !== 1 ? 's' : ''}${q ? ` for "${q}"` : ''}`;
+  }
+
+  document.querySelector('.big-search').addEventListener('submit', function(e) {
+    e.preventDefault();
+    filterResults(input.value);
+  });
+</script>
+</body>
 </html>
